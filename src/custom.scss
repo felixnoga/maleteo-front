@@ -1,0 +1,35 @@
+//Fonts
+@import url('https://fonts.googleapis.com/css?family=Catamaran:400,500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap');
+
+//Colores de Maleteo
+$pumpkin-orange: #f68f24;
+$water-blue: #17aee2;
+$slate-grey: #55565a;
+$steel: #55565a;
+$tea-blue: #059ba8;
+$pastel-orange: #ffa34e;
+$redish-pink: #ff2c51;
+$pale-salmon: #ffc894;
+$warm-grey: #979797;
+$mango: #f68f24;
+$yellowish-orange: #f9a519;
+$sun-yellow: #ffce32;
+
+
+//Colores bootstrap modificados para maleteo
+$primary: $mango;
+
+
+//Fuentes maleteo (Noto Sans y Catamarán)
+$font-family-sans-serif: "Noto Sans", Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-maleteo-headings: "Catamaran", sans-serif;
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-maleteo-headings;
+  font-weight: bold;
+}
+
+
+@import "~bootstrap/scss/bootstrap";
