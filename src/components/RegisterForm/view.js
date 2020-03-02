@@ -8,12 +8,15 @@ function RegisterForm() {
     name: '',
     surname: '',
     password: '',
+    birthday: '',
     offerts: false
   })
 
   const [registerName, setRegisterName] = useState('')
 
   const [registerSurname, setRegisterSurname] = useState('')
+
+  const [registerBirthday, setRegisterBirthday] = useState('')
 
   const PASSWORD_REGEXP = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z]).{8,}$/
 
@@ -91,8 +94,18 @@ function RegisterForm() {
     }
   }
 
+  function handleBirthday(e) {
+    const birthday = e.target.value
+    const separation = birthday.indexOf('-')
+
+    const year = birthday.slice(0, separation)
+    console.log(year)
+    // const month=
+    // const day=
+  }
+
   function handleOfferts(e) {
-    const checkbox = document.getElementById('register_ofertas__checkbox')
+    const checkbox = document.getElementById('advicesCheckbox')
     let { offerts } = registerForm
 
     if (checkbox.className === 'unchecked') {
@@ -108,74 +121,90 @@ function RegisterForm() {
   console.log(registerForm)
 
   return (
-    <div id="register_container">
-      <h2>Únete a Maleteo y disfruta de sus ventajas</h2>
+    <form>
+      <div className="col-12">
+        <h3>Únete a Maleteo y disfruta de sus ventajas</h3>
+      </div>
 
-      <form>
-        <label htmlFor="register_email">
-          <p>Direccion de correo electrónico</p>
+      <div className="form-group">
+        <div className="col-sm-6">
+          <label htmlFor="registerEmail">Correo Electronico</label>
           <input
             type="email"
-            name="register_email"
-            id="register_email"
+            id="registerEmail"
+            className="form-control form-control-sm  bg-white border-right-0 border-left-0 border-top-0"
             onChange={handleEmail}
-          />
-        </label>
-        <label htmlFor="register_name">
-          <p>Nombre</p>
+          ></input>
+        </div>
+        <div className="col-sm-6">
+          <label htmlFor="registerName">Nombre</label>
           <input
             type="text"
-            name="register_name"
-            id="register_name"
+            id="registerName"
+            className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
             onChange={handleName}
-          />
-        </label>
-        <label htmlFor="register_surname">
-          <p>Apellido</p>
+          ></input>
+        </div>
+        <div className="col-sm-6">
+          <label htmlFor="registerSurname">Apellido</label>
           <input
             type="text"
-            name="register_surname"
-            id="register_surname"
+            id="registerSurname"
+            className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
             onChange={handleSurname}
-          />
-        </label>
-        <label htmlFor="register_password">
-          <p>Contraseña</p>
+          ></input>
+        </div>
+        <div className="col-sm-6">
+          <label htmlFor="registerPassword">Contraseña</label>
           <input
             type="password"
-            name="register_password"
-            id="register_password"
+            id="registerPassword"
+            className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
             onChange={handlePassword}
+          ></input>
+        </div>
+        <div className="col-sm-6">
+          <label htmlFor="registerBirthday">Fecha de Nacimiento</label>
+          <input
+            type="date"
+            id="registerBirthday"
+            className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
+            onChange={handleBirthday}
+            // onChange={handleSurname}
+          ></input>
+          <small id="passwordHelpBlock" className="form-text text-muted">
+            Para registrarte tendrás que ser mayor de edad. Los usuarios no
+            veran tu fecha de cumpleaños
+          </small>
+        </div>
+        <div className="form-check form-check-inline">
+          <input
+            type="checkbox"
+            name="advicesCheckbox"
+            id="advicesCheckbox"
+            className="unchecked"
+            onClick={handleOfferts}
           />
-        </label>
-        {/* 
-        ToDo = Crear input para fecha de nacimiento, ver npm react-datepicker */}
-
-        <div>
-          <label htmlFor="register_ofertas__checkbox">
-            <input
-              type="checkbox"
-              name="register_ofertas__checkbox"
-              id="register_ofertas__checkbox"
-              className="unchecked"
-              onClick={handleOfferts}
-            />
-            Recibe Ofertas
+          <label htmlFor="advicesCheckbox" className="form-check-label">
+            Quiero recibir consejos sobre como gestionar mi equipaje, ofertas,
+            novedades y otros corres de Maleteo
           </label>
         </div>
-
-        <button
-          disabled={
-            !registerForm.name ||
-            !registerForm.surname ||
-            !registerForm.password
-          }
-          type="submit"
-        >
-          Registrarse
-        </button>
-      </form>
-    </div>
+        <div className="form-group">
+          <button
+            type="submit"
+            className="btn btn-primary text-white"
+            disabled={
+              !registerForm.name ||
+              !registerForm.surname ||
+              !registerForm.password
+            }
+          >
+            Registrarse
+          </button>
+        </div>
+      </div>
+    </form>
   )
 }
 
