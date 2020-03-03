@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import Axios from "axios";
 
-export const ArticleContext = React.createContext()
+export const ArticleContext = React.createContext();
 
 export function ArticleContextProvider({children}) {
     const [articles, setArticles] = useState([]);

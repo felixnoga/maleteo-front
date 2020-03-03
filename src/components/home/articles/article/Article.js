@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFileAlt} from "@fortawesome/free-regular-svg-icons";
 
 const Article = (props) => {
-
+    console.log(props.content);
     const {title, body} = props.content;
     let style = {};
     if(props.content.picture_url) {
