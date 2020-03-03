@@ -19,8 +19,8 @@ export function GlobalContextProvider ({children}) {
             })
     }, []);
     return (
-        <GlobalContext.provider value={[state, setState]}>
+        <GlobalContext.Provider value={[state, setState]}>
             {children}
-        </GlobalContext.provider>
+        </GlobalContext.Provider>
     )
 }
