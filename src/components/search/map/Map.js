@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import GoogleMapReact from 'google-map-react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMapMarker} from "@fortawesome/free-solid-svg-icons";
-import {GlobalContext} from "../../context/globalContext";
+import {GlobalContext} from "../../../context/globalContext";
 
 const style = {
     color: 'red'
