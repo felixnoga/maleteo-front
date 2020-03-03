@@ -16,8 +16,6 @@ function RegisterForm() {
 
   const [registerSurname, setRegisterSurname] = useState('')
 
-  const [registerBirthday, setRegisterBirthday] = useState('')
-
   const PASSWORD_REGEXP = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z]).{8,}$/
 
   function handleEmail(e) {
@@ -96,12 +94,13 @@ function RegisterForm() {
 
   function handleBirthday(e) {
     const birthday = e.target.value
-    const separation = birthday.indexOf('-')
+    const year = birthday.slice(0, 4)
+    const month = birthday.slice(5, 7)
+    const day = birthday.slice(8, 10)
 
-    const year = birthday.slice(0, separation)
-    console.log(year)
-    // const month=
-    // const day=
+    const registerBirthday = year.concat(month).concat(day)
+
+    setRegisterForm({ ...registerForm, birthday: registerBirthday })
   }
 
   function handleOfferts(e) {
@@ -121,90 +120,96 @@ function RegisterForm() {
   console.log(registerForm)
 
   return (
-    <form>
-      <div className="col-12">
-        <h3>Únete a Maleteo y disfruta de sus ventajas</h3>
-      </div>
+    <div className="container-fluid">
+      <form>
+        <div className="col-12">
+          <h3>Únete a Maleteo y disfruta de sus ventajas</h3>
+        </div>
 
-      <div className="form-group">
-        <div className="col-sm-6">
-          <label htmlFor="registerEmail">Correo Electronico</label>
-          <input
-            type="email"
-            id="registerEmail"
-            className="form-control form-control-sm  bg-white border-right-0 border-left-0 border-top-0"
-            onChange={handleEmail}
-          ></input>
-        </div>
-        <div className="col-sm-6">
-          <label htmlFor="registerName">Nombre</label>
-          <input
-            type="text"
-            id="registerName"
-            className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
-            onChange={handleName}
-          ></input>
-        </div>
-        <div className="col-sm-6">
-          <label htmlFor="registerSurname">Apellido</label>
-          <input
-            type="text"
-            id="registerSurname"
-            className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
-            onChange={handleSurname}
-          ></input>
-        </div>
-        <div className="col-sm-6">
-          <label htmlFor="registerPassword">Contraseña</label>
-          <input
-            type="password"
-            id="registerPassword"
-            className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
-            onChange={handlePassword}
-          ></input>
-        </div>
-        <div className="col-sm-6">
-          <label htmlFor="registerBirthday">Fecha de Nacimiento</label>
-          <input
-            type="date"
-            id="registerBirthday"
-            className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
-            onChange={handleBirthday}
-            // onChange={handleSurname}
-          ></input>
-          <small id="passwordHelpBlock" className="form-text text-muted">
-            Para registrarte tendrás que ser mayor de edad. Los usuarios no
-            veran tu fecha de cumpleaños
-          </small>
-        </div>
-        <div className="form-check form-check-inline">
-          <input
-            type="checkbox"
-            name="advicesCheckbox"
-            id="advicesCheckbox"
-            className="unchecked"
-            onClick={handleOfferts}
-          />
-          <label htmlFor="advicesCheckbox" className="form-check-label">
-            Quiero recibir consejos sobre como gestionar mi equipaje, ofertas,
-            novedades y otros corres de Maleteo
-          </label>
-        </div>
         <div className="form-group">
-          <button
-            type="submit"
-            className="btn btn-primary text-white"
-            disabled={
-              !registerForm.name ||
-              !registerForm.surname ||
-              !registerForm.password
-            }
-          >
-            Registrarse
-          </button>
+          <div className="col-sm-6">
+            <label htmlFor="registerEmail">Correo Electronico</label>
+            <input
+              type="email"
+              id="registerEmail"
+              className="form-control form-control-sm  bg-white border-right-0 border-left-0 border-top-0"
+              onChange={handleEmail}
+            ></input>
+          </div>
+          <div className="col-sm-6">
+            <label htmlFor="registerName">Nombre</label>
+            <input
+              type="text"
+              id="registerName"
+              className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
+              onChange={handleName}
+            ></input>
+          </div>
+          <div className="col-sm-6">
+            <label htmlFor="registerSurname">Apellido</label>
+            <input
+              type="text"
+              id="registerSurname"
+              className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
+              onChange={handleSurname}
+            ></input>
+          </div>
+          <div className="col-sm-6">
+            <label htmlFor="registerPassword">Contraseña</label>
+            <input
+              type="password"
+              id="registerPassword"
+              className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
+              onChange={handlePassword}
+            ></input>
+            <small id="passwordHelpBlock" className="form-text text-muted">
+              La contraseña debe tener minimo 8 caracteres, mayusculas,
+              minusculas y numeros
+            </small>
+          </div>
+          <div className="col-sm-6">
+            <label htmlFor="registerBirthday">Fecha de Nacimiento</label>
+            <input
+              type="date"
+              id="registerBirthday"
+              className="form-control form-control-sm bg-white border-right-0 border-left-0 border-top-0"
+              onChange={handleBirthday}
+              // onChange={handleSurname}
+            ></input>
+            <small id="passwordHelpBlock" className="form-text text-muted">
+              Para registrarte tendrás que ser mayor de edad. Los usuarios no
+              veran tu fecha de cumpleaños
+            </small>
+          </div>
+          <div className="form-check form-check-inline">
+            <input
+              type="checkbox"
+              name="advicesCheckbox"
+              id="advicesCheckbox"
+              className="unchecked"
+              onClick={handleOfferts}
+            />
+            <label htmlFor="advicesCheckbox" className="form-check-label">
+              Quiero recibir consejos sobre como gestionar mi equipaje, ofertas,
+              novedades y otros corres de Maleteo
+            </label>
+          </div>
+          <div className="form-group">
+            <button
+              type="submit"
+              className="btn btn-primary text-white"
+              disabled={
+                !registerForm.name ||
+                !registerForm.surname ||
+                !registerForm.password
+              }
+            >
+              Registrarse
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   )
 }
 
