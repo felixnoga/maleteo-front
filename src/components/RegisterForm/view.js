@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import './style.sass'
+import './style.scss'
 
 function RegisterForm() {
   const [registerForm, setRegisterForm] = useState({
@@ -120,7 +120,7 @@ function RegisterForm() {
   console.log(registerForm)
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid" id="register_container">
       <form>
         <div className="col-12">
           <h3>Únete a Maleteo y disfruta de sus ventajas</h3>
