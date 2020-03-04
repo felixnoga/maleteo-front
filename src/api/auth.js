@@ -24,7 +24,7 @@ export const whoAmI = async token => {
   }
 
   console.log ("Usuario Autenticado por back como user:", user)
-  return user.email
+  return user;
 };
 
 export const register = async body => {

@@ -6,7 +6,7 @@ export const AuthContext = React.createContext();
 
 export function AuthContextProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const [userdetails, setUserDetails] = useState (null)
+  const [userdetails, setUserDetails] = useState ({})
 
   const [cookies] = useCookies(['token']);
   const { token } = cookies;
@@ -20,7 +20,7 @@ export function AuthContextProvider({ children }) {
         setIsAuthenticated(true);
         const user = await whoAmI (token)
         setUserDetails(user)
-        console.log ("User set to prueba in Authentication context")
+        console.log ("User set to "+user.name+" in Authentication context")
       } catch (e) {
         console.log ("Authenticated to false in Authentication context")
         setIsAuthenticated(false);

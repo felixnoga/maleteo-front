@@ -19,11 +19,13 @@ const ProfileComponent = () => {
     removeCookie('token')
   }
 
+  const user=userdetails.name
+
   if (isAuthenticated)
     return (
       <div>
         <h1>Este es el componente Profile</h1>
-        <b> Estas autenticado como { userdetails } </b>
+        <b> Estas autenticado como { user } </b>
         <b> En este componente deberas poder editar tu perfil de usuario </b>
         <b>
           {' '}
