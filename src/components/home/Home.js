@@ -1,20 +1,19 @@
-import React from "react";
-import FormFindKeeper from "./FormFindKeeper";
-import ArticleList from "./articles/articleList/ArticleList";
-import Map from "../search/map/Map";
-import {ArticleContextProvider} from "../../context/articleContext";
+import React from 'react'
+import FormFindKeeper from './FormFindKeeper'
+import ArticleList from './articles/articleList/ArticleList'
+import Map from '../search/map/Map'
+import { ArticleContextProvider } from '../../context/articleContext'
 
 const Home = () => {
-    return (
-        <div className="container-fluid">
-            <FormFindKeeper/>
-            <ArticleContextProvider>
-                <ArticleList/>
-            </ArticleContextProvider>
+  return (
+    <div className="container-fluid">
+      <FormFindKeeper />
+      <ArticleContextProvider>
+        <ArticleList />
+      </ArticleContextProvider>
+      <Map />
+    </div>
+  )
+}
 
-            <Map/>
-        </div>
-    )
-};
-
-export default Home;
+export default Home
