@@ -54,6 +54,7 @@ function RegisterForm({ history }) {
   }
 
   function handleName(e) {
+    //TODO Fix Error:   Name is submitted without last character
     const name = e.target.value.trim()
 
     setRegisterName(name)
@@ -83,6 +84,7 @@ function RegisterForm({ history }) {
   }
 
   function handleSurname(e) {
+     //TODO Fix Error:   Surame is submitted without last character
     const surName = e.target.value.trim()
 
     setRegisterSurname(surName)
