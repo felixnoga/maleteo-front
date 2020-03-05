@@ -14,7 +14,7 @@ const ArticleList = () => {
                     {
                         articles.map((article)=> {
                             return (
-                                <Article content={article} />
+                                <Article content={article} key={article._id}/>
                             )
                         })
                     }

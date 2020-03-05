@@ -12,7 +12,7 @@ const Home = () => {
                 <ArticleList/>
             </ArticleContextProvider>
 
-            <Map/>
+
         </div>
     )
 };

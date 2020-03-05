@@ -16,7 +16,7 @@ const Article = (props) => {
 
 
     return (
-        <div className="col-md-2">
+        <div className="col-md-4 col-sm-6 col-lg-3 mb-2">
             <div className="card text-white" id="article-card" style={style}>
                 <div className="card-body">
                     <div className="row">
