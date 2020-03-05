@@ -15,6 +15,6 @@ ReactDOM.render(
         <App />
       </AuthContextProvider>
     </CookiesProvider>
-  </GlobalContextProvider>, 
+  </GlobalContextProvider>,
   document.getElementById('root')
-)
+);
