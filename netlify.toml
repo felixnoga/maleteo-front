@@ -1,0 +1,23 @@
+# Default values when deploying the app to netliy
+command = "echo Hello Upgrade Students!  Thks to deploy to 'default context'"
+
+# Production context: all deploys from the Production branch set in your site's
+# deploy contexts will inherit these settings.
+[context.production]
+
+REACT_APP_BACKEND_URL="https://maleteo-api.herokuapp.com"
+REACT_APP_GOOGLE_API_KEY="AIzaSyDpT7K7Tt6UvUo-gW1IAqOPfIFswhHhyxQ"
+
+# Deploy Preview context: all deploys generated from a pull/merge request will
+# inherit these settings.
+[context.develop]
+
+REACT_APP_BACKEND_URL="https://maleteo-api.herokuapp.com"
+REACT_APP_GOOGLE_API_KEY="AIzaSyDpT7K7Tt6UvUo-gW1IAqOPfIFswhHhyxQ"
+
+[context."feature/netlify"]
+#command = "echo 'special branch'"
+base = "netlify"
+
+REACT_APP_BACKEND_URL="https://maleteo-api.herokuapp.com"
+REACT_APP_GOOGLE_API_KEY="AIzaSyDpT7K7Tt6UvUo-gW1IAqOPfIFswhHhyxQ"
