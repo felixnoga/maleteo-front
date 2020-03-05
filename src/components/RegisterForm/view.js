@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+
+import { register } from '../../api/auth';
 
 import './style.scss'
 
-function RegisterForm() {
+function RegisterForm({ history }) {
+
+  const [cookies, setCookie] = useCookies(['token']);
+  const { token } = cookies;
+  const [error, setError] = useState(null);
+
+
   const [registerForm, setRegisterForm] = useState({
     email: '',
     name: '',
     surname: '',
     password: '',
     birthday: '',
-    offerts: false
+    optIn: false
   })
 
   const [registerName, setRegisterName] = useState('')
@@ -18,12 +27,34 @@ function RegisterForm() {
 
   const PASSWORD_REGEXP = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z]).{8,}$/
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+      const res = await register(registerForm);
+      console.log ("Tengo el token de autenticacion "+res.token)
+      setCookie('token', res.token);
+      // Al ponerse la cookie, se ejecutara el UserEffect del Contexto de Autenticacion
+    } catch (e) {
+      setError(e.message);
+    }
+  }
+  
+  useEffect(() => {
+    console.log ("UseEffect de nuevo token o de cambio de history")
+    if (token) {
+      history.push('/profile');
+    }
+  }, [token, history]);
+
+
   function handleEmail(e) {
     const { value } = e.target
     setRegisterForm({ ...registerForm, email: value.trim() })
   }
 
   function handleName(e) {
+    //TODO Fix Error:   Name is submitted without last character
     const name = e.target.value.trim()
 
     // console.log(name)
@@ -63,7 +94,12 @@ function RegisterForm() {
   }
 
   function handleSurname(e) {
+<<<<<<< HEAD
     const surname = e.target.value.trim()
+=======
+     //TODO Fix Error:   Surame is submitted without last character
+    const surName = e.target.value.trim()
+>>>>>>> d8928bde09ce0a485a3f8f255d7308a358ff229c
 
     // setRegisterSurname(surName)
 
@@ -94,12 +130,13 @@ function RegisterForm() {
 
   function handlePassword(e) {
     const { value } = e.target
+    const password = value.trim()
 
-    if (!PASSWORD_REGEXP.test(value)) {
+    if (!PASSWORD_REGEXP.test(password)) {
       console.log('contraseña no valida')
     } else {
       console.log('contraseña valida')
-      setRegisterForm({ ...registerForm, password: value.trim() })
+      setRegisterForm({ ...registerForm, password : password })
     }
   }
 
@@ -110,22 +147,23 @@ function RegisterForm() {
     const day = birthday.slice(8, 10)
 
     const registerBirthday = year.concat(month).concat(day)
+    //TODO Check at front that you are 18 years older !!!!
 
     setRegisterForm({ ...registerForm, birthday: registerBirthday })
   }
 
-  function handleOfferts(e) {
+  function handleOptIn(e) {
     const checkbox = document.getElementById('advicesCheckbox')
-    let { offerts } = registerForm
+    let {optIn } = registerForm
 
     if (checkbox.className === 'unchecked') {
       checkbox.className = 'checked'
-      offerts = true
+      optIn = true
     } else {
       checkbox.className = 'unchecked'
-      offerts = false
+      optIn = false
     }
-    setRegisterForm({ ...registerForm, offerts: offerts })
+    setRegisterForm({ ...registerForm, optIn: optIn })
   }
 
   useEffect(() => {
@@ -142,7 +180,7 @@ function RegisterForm() {
 
   return (
     <div className="container-fluid" id="register_container">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="col-12">
           <h3>Únete a Maleteo y disfruta de sus ventajas</h3>
         </div>
@@ -208,7 +246,7 @@ function RegisterForm() {
               name="advicesCheckbox"
               id="advicesCheckbox"
               className="unchecked"
-              onClick={handleOfferts}
+              onClick={handleOptIn}
             />
             <label htmlFor="advicesCheckbox" className="form-check-label">
               Quiero recibir consejos sobre como gestionar mi equipaje, ofertas,
@@ -220,6 +258,7 @@ function RegisterForm() {
               type="submit"
               className="btn btn-primary text-white"
               disabled={
+                !registerForm.email ||
                 !registerForm.name ||
                 !registerForm.surname ||
                 !registerForm.password
@@ -229,6 +268,9 @@ function RegisterForm() {
             </button>
           </div>
         </div>
+        {error ? (
+        <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>
+      ) : null}
       </form>
     </div>
   )
