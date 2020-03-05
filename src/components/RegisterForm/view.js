@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './style.scss'
 
@@ -26,14 +26,16 @@ function RegisterForm() {
   function handleName(e) {
     const name = e.target.value.trim()
 
-    setRegisterName(name)
+    // console.log(name)
 
-    if (registerName) {
-      const space = registerName.indexOf(' ')
+    // setRegisterName(name)
+
+    if (name) {
+      const space = name.indexOf(' ')
 
       if (space > 0) {
-        const firstName = registerName.slice(0, space).trim()
-        const secondName = registerName.slice(space).trim()
+        const firstName = name.slice(0, space).trim()
+        const secondName = name.slice(space).trim()
 
         const formFirstName =
           firstName.charAt(0).toUpperCase() + firstName.slice(1)
@@ -42,27 +44,35 @@ function RegisterForm() {
 
         const fullName = formFirstName.concat(' ', formSecondName)
 
-        setRegisterForm({ ...registerForm, name: fullName.trim() })
-      } else if (space === -1) {
-        const name =
-          registerName.charAt(0).toUpperCase() + registerName.slice(1)
+        // console.log(fullName)
+        setRegisterName(fullName)
 
-        setRegisterForm({ ...registerForm, name: name.trim() })
+        // setRegisterForm({ ...registerForm, name: fullName })
+      } else if (space === -1) {
+        const name = e.target.value.trim()
+
+        const inputName = name.charAt(0).toUpperCase() + name.slice(1)
+
+        setRegisterName(inputName)
+
+        // setRegisterForm({ ...registerForm, name: inputName })
       }
     }
+
+    // setRegisterForm({ ...registerForm, name: registerName })
   }
 
   function handleSurname(e) {
-    const surName = e.target.value.trim()
+    const surname = e.target.value.trim()
 
-    setRegisterSurname(surName)
+    // setRegisterSurname(surName)
 
-    if (registerSurname) {
-      const space = registerSurname.indexOf(' ')
+    if (surname) {
+      const space = surname.indexOf(' ')
 
       if (space > 0) {
-        const firstSurname = registerSurname.slice(0, space).trim()
-        const secondSurname = registerSurname.slice(space).trim()
+        const firstSurname = surname.slice(0, space).trim()
+        const secondSurname = surname.slice(space).trim()
 
         const formFirstSurname =
           firstSurname.charAt(0).toUpperCase() + firstSurname.slice(1)
@@ -71,12 +81,13 @@ function RegisterForm() {
 
         const fullSurname = formFirstSurname.concat(' ', formSecondSurname)
 
-        setRegisterForm({ ...registerForm, surname: fullSurname.trim() })
+        setRegisterSurname(fullSurname)
       } else if (space === -1) {
-        const surname =
-          registerSurname.charAt(0).toUpperCase() + registerSurname.slice(1)
+        const surname = e.target.value.trim()
 
-        setRegisterForm({ ...registerForm, surname: surname.trim() })
+        const inputSurname = surname.charAt(0).toUpperCase() + surname.slice(1)
+
+        setRegisterSurname(inputSurname)
       }
     }
   }
@@ -116,6 +127,16 @@ function RegisterForm() {
     }
     setRegisterForm({ ...registerForm, offerts: offerts })
   }
+
+  useEffect(() => {
+    setRegisterForm({ ...registerForm, name: registerName })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registerName])
+
+  useEffect(() => {
+    setRegisterForm({ ...registerForm, surname: registerSurname })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registerSurname])
 
   console.log(registerForm)
 
