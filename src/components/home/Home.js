@@ -11,10 +11,9 @@ const Home = () => {
       <ArticleContextProvider>
         <ArticleList />
       </ArticleContextProvider>
-      <Map />
     </div>
   )
-}
+};
 
 export default Home;
 

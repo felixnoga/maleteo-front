@@ -15,9 +15,12 @@ export const getAllArticles = () => {
 //Sites API services
 
 export const getAllSites = () => {
+    console.log('antes de axios')
     return Axios.get(`${process.env.REACT_APP_BACKEND_URL}/site/all`)
         .then ( (res)=>{
+            console.log('SITES', res.data);
             return res.data;
+
 
         })
         .catch((e) => {
