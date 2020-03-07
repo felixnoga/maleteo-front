@@ -9,12 +9,19 @@ function NotFound() {
 
   return (
 
-    
+    /*
     <div className="container-fluid">
       <h1>Ruta no valida</h1>
       <Link to="/">Volver al home </Link>
       <FontAwesomeIcon icon={faHome} />
-    </div>
+    </div>*/
+
+<div class="container-fluid">
+  Hello! I am in a full-width container.
+</div>
+
+
+
   );
 }
 
