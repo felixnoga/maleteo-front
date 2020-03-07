@@ -94,12 +94,7 @@ function RegisterForm({ history }) {
   }
 
   function handleSurname(e) {
-<<<<<<< HEAD
     const surname = e.target.value.trim()
-=======
-     //TODO Fix Error:   Surame is submitted without last character
-    const surName = e.target.value.trim()
->>>>>>> d8928bde09ce0a485a3f8f255d7308a358ff229c
 
     // setRegisterSurname(surName)
 
