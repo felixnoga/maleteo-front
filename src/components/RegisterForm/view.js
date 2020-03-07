@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
+import React, { useState, useEffect } from 'react'
+import { useCookies } from 'react-cookie'
 
-import { register } from '../../api/auth';
+import { register } from '../../api/auth'
 
 import './style.scss'
 
 function RegisterForm({ history }) {
-
-  const [cookies, setCookie] = useCookies(['token']);
-  const { token } = cookies;
-  const [error, setError] = useState(null);
-
+  const [cookies, setCookie] = useCookies(['token'])
+  const { token } = cookies
+  const [error, setError] = useState(null)
 
   const [registerForm, setRegisterForm] = useState({
     email: '',
@@ -28,25 +26,24 @@ function RegisterForm({ history }) {
   const PASSWORD_REGEXP = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z]).{8,}$/
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      const res = await register(registerForm);
-      console.log ("Tengo el token de autenticacion "+res.token)
-      setCookie('token', res.token);
+      const res = await register(registerForm)
+      console.log('Tengo el token de autenticacion ' + res.token)
+      setCookie('token', res.token)
       // Al ponerse la cookie, se ejecutara el UserEffect del Contexto de Autenticacion
     } catch (e) {
-      setError(e.message);
+      setError(e.message)
     }
   }
-  
-  useEffect(() => {
-    console.log ("UseEffect de nuevo token o de cambio de history")
-    if (token) {
-      history.push('/profile');
-    }
-  }, [token, history]);
 
+  useEffect(() => {
+    console.log('UseEffect de nuevo token o de cambio de history')
+    if (token) {
+      history.push('/profile')
+    }
+  }, [token, history])
 
   function handleEmail(e) {
     const { value } = e.target
@@ -131,7 +128,7 @@ function RegisterForm({ history }) {
       console.log('contraseña no valida')
     } else {
       console.log('contraseña valida')
-      setRegisterForm({ ...registerForm, password : password })
+      setRegisterForm({ ...registerForm, password: password })
     }
   }
 
@@ -149,7 +146,7 @@ function RegisterForm({ history }) {
 
   function handleOptIn(e) {
     const checkbox = document.getElementById('advicesCheckbox')
-    let {optIn } = registerForm
+    let { optIn } = registerForm
 
     if (checkbox.className === 'unchecked') {
       checkbox.className = 'checked'
@@ -264,8 +261,8 @@ function RegisterForm({ history }) {
           </div>
         </div>
         {error ? (
-        <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>
-      ) : null}
+          <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>
+        ) : null}
       </form>
     </div>
   )

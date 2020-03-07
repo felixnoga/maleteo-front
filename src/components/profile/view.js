@@ -23,42 +23,62 @@ const ProfileComponent = () => {
 
   if (isAuthenticated)
     return (
-      <div class="container-fluid">
-        <div class="row opcion pista">
-        <div class="col pista1">
-          </div>
-          <div class="col pista2">
+      <div className="container-fluid profileContainer">
+        <div className="row mt-3 text-justify">
+          <div className="col-sm-3"></div>
+          <div className="col col-sm-3 ml-2 ">
             <h1>{userdetails.name}</h1>
             <p>Puedes ver y editar tu perfil</p>
           </div>
-          <div class="col profile pista3">
-            <p>hola</p>
-             <img src={userdetails.profile_img} class="rounded float-left w-25" alt="Imagen Perfil"></img>
+          <div className="col col-sm-3">
+            <img
+              id="userPicture"
+              src={userdetails.profile_img}
+              alt={userdetails.name}
+            />
           </div>
+          <div className="col-sm-3"></div>
         </div>
-        <div class="col pista4">
-          </div>
-        <div class="row">
-          <div class="col">
-            <div class="opcion">
-              <h3>Convierte en guardian</h3>
-              <p>Puedes ganar 400€ de media al mes</p>
+        <div className="row">
+          <div className="col-sm-3"></div>
+          <div className="col-sm-6 mt-5 text-left">
+            <div className="row ">
+              {!userdetails.isKeeper ? (
+                <div className="col info">
+                  <h3>
+                    <a href="/toguardian" className="profileLink">
+                      Convierte en guardian
+                    </a>
+                  </h3>
+                  <p>Puedes ganar 400€ de media al mes</p>
+                </div>
+              ) : null}
             </div>
-            <div class="opcion">
-              <h3>Invita a tus amigos</h3>
-              <p>Y podrás ganar descuentos para tí</p>
+            <div className="row">
+              <div className="col info">
+                <h3>Invita a tus amigos</h3>
+                <p>Y podrás ganar descuentos para tí</p>
+              </div>
             </div>
-            <div class="opcion">
-              <h3>Créditos y descuentos</h3>
+            <div className="row">
+              <div className="col info">
+                <h3>Créditos y descuentos</h3>
+              </div>
             </div>
-            <div class="opcion">
-              <h3>Publica tu anuncio o experiencia</h3>
+            <div className="row">
+              <div className="col info">
+                <h3>Publica tu anuncio o experiencia</h3>
+              </div>
             </div>
-            <div class="opcion">
-              <h3>Configuración</h3>
+            <div className="row">
+              <div className="col info">
+                <h3>Configuración</h3>
+              </div>
             </div>
-            <div class="opcion">
-              <h3>Ayuda</h3>
+            <div className="row">
+              <div className="col info">
+                <h3>Ayuda</h3>
+              </div>
             </div>
           </div>
         </div>
@@ -76,3 +96,5 @@ const ProfileComponent = () => {
 }
 
 export default ProfileComponent
+
+// src=
