@@ -1,0 +1,19 @@
+#userPicture {
+  width: 130px;
+  height: 130px;
+}
+
+.info {
+  border-bottom: solid 0.5px gray;
+  padding-top: 20px;
+  text-decoration: none;
+  margin: 1rem;
+}
+
+.profileLink,
+.profileLink:hover,
+.profileLink:visited,
+.profileLink:active {
+  text-decoration: none;
+  color: black;
+}
