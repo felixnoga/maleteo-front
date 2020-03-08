@@ -29,7 +29,9 @@ const FormFindKeeper = () => {
             .then((r)=> {
                 const currentLat = r[0].geometry.location.lat();
                 const currentLng = r[0].geometry.location.lng();
-                setglobalState({...globalState, currentBooking: {...globalState.currentBooking, locationCoordinates: {lat: currentLat, lng: currentLng}}})
+                setglobalState({...globalState, currentBooking: {...globalState.currentBooking, locationCoordinates: {lat: currentLat, lng: currentLng}, locationAddress: address.description}});
+                localStorage.setItem('currentLat', currentLat);
+                localStorage.setItem('currentLng', currentLng);
             })
             .catch((e)=> {console.log(e)});
         setglobalState({...globalState, currentSearchAdress: address});
@@ -52,6 +54,11 @@ const FormFindKeeper = () => {
         }
     };
 
+    const checkIfButtonDisabled = ()=> {
+        return (!globalState.currentBooking.startDate || !globalState.currentBooking.endDate || !globalState.currentBooking.suitcasesPieces);
+
+    };
+
     return (
         <div className="row mt-2">
 
@@ -71,8 +78,9 @@ const FormFindKeeper = () => {
                                     renderSuggestions={(active, suggestions, onSelectSuggestion) => (
                                         <ul className="list-group" id="suggestion-list">
                                             {
-                                                suggestions.map((suggestion) => (
+                                                suggestions.map((suggestion, i) => (
                                                     <li
+                                                        key={i}
                                                         className="list-group-item suggestion"
                                                         onClick={(event) => onSelectSuggestion(suggestion, event)}
                                                     >
@@ -153,6 +161,7 @@ const FormFindKeeper = () => {
                             <div className="input-group">
                                 <button type="submit"
                                         className="btn btn-primary text-white"
+                                        disabled={checkIfButtonDisabled()}
 
                                 >Buscar</button>
                             </div>

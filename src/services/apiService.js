@@ -15,7 +15,7 @@ export const getAllArticles = () => {
 //Sites API services
 
 export const getAllSites = () => {
-    console.log('antes de axios')
+
     return Axios.get(`${process.env.REACT_APP_BACKEND_URL}/site/all`)
         .then ( (res)=>{
             console.log('SITES', res.data);
@@ -26,4 +26,13 @@ export const getAllSites = () => {
         .catch((e) => {
             console.log(e.message);
         })
+};
+
+export const getNearestSites = (location) => {
+    return Axios.put(`${process.env.REACT_APP_BACKEND_URL}/site/nearest`, location, {
+        headers: { Accept: 'application/json',
+            'Content-Type': 'application/json' }
+    })
+        .then(res => res.data)
+        .catch(e => {console.log(e)});
 };
