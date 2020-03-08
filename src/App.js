@@ -7,6 +7,7 @@ import RegisterForm from './components/RegisterForm'
 import ProfileComponent from "./components/profile";
 import BookingComponent from "./components/booking";
 import NotFound from './components/NotFound';
+import Navbar from "./components/navbar";
 
 import {GlobalContextProvider} from "./context/globalContext";
 
@@ -18,6 +19,7 @@ function App() {
     <div className="App">
 
         <Router>
+            <Navbar />
             <Switch>
 
                 <Route exact path="/register" component={RegisterForm} />

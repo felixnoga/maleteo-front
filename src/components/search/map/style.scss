@@ -1,0 +1,22 @@
+#site-card-image{
+  max-height: 300px;
+}
+.site-card {
+  background-color: #f9a519;
+}
+
+.equal {
+  display: flex;
+  flex-wrap: wrap;
+}
+.equal > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+.indicador {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: white;
+}
