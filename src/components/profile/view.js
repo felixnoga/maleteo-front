@@ -1,16 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'
 import { useCookies } from 'react-cookie'
-import { AuthContext } from '../../context/AuthContext';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome} from '@fortawesome/free-solid-svg-icons';
+import { AuthContext } from '../../context/AuthContext'
+import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHome } from '@fortawesome/free-solid-svg-icons'
 
 import './style.scss'
 
 const ProfileComponent = () => {
   const [, , removeCookie] = useCookies(['token'])
-  const [isAuthenticated, userdetails] = useContext(AuthContext);
-  //const isAuthenticated = useContext(AuthContext)
+  const [isAuthenticated, userdetails] = useContext(AuthContext)
 
   function handleLogout() {
     //Borra Cokie, de forma que ya no estes mas autenticado
@@ -19,38 +18,82 @@ const ProfileComponent = () => {
     removeCookie('token')
   }
 
-
   if (isAuthenticated)
     return (
-      <div>
-        <h1>Este es el componente Profile</h1>
-        <b> Estas autenticado en front como { userdetails.name } {userdetails.surname} </b><br></br>
-        <b> Tu e-mail es {userdetails.email}</b><br></br>
-        <b> Tu imagen de perfil esta en {userdetails.profile_img} </b><br></br>
-        <b> Puedes cambiar tu imagen directamente en gravatar,  o editar tu perfil en tus preferencias para meter una nueva foto</b>
-        <br></br><br></br>
-        
-        <b> En este componente deberas poder editar tu perfil de usuario </b>
-        <b>
-          {' '}
-          Además, serás redigido a esta página automaticamente cuando te
-          registres y obtengas tu cookie de autenticación
-        </b>
-        <b>
-          {' '}
-          No podras volver ir a la ruta de register o login, si existe la cookie, asi
-          que si quieres volver, haz un logout para borrar la cookie{' '}
-        </b> <br></br><br></br>
-        <button type="button" onClick={handleLogout}>
-          Logout
-        </button>
+      <div className="container-fluid profileContainer">
+        <div className="row mt-3 text-justify">
+          <div className="col-sm-3"></div>
+          <div className="col col-sm-3 ml-2 ">
+            <h1>{userdetails.name}</h1>
+            <p>Puedes ver y editar tu perfil</p>
+          </div>
+          <div className="col col-sm-3">
+            <img
+              id="userPicture"
+              src={userdetails.profile_img}
+              alt={userdetails.name}
+            />
+          </div>
+          <div className="col-sm-3"></div>
+        </div>
+        <div className="row">
+          <div className="col-sm-3"></div>
+          <div className="col-sm-6 mt-5 text-left">
+            <div className="row ">
+              {!userdetails.isKeeper ? (
+                <div className="col info">
+                  <h3>
+                    <a href="/toguardian" className="profileLink">
+                      Convierte en guardian
+                    </a>
+                  </h3>
+                  <p>Puedes ganar 400€ de media al mes</p>
+                </div>
+              ) : (
+                <div className="col info">
+                  <h3>
+                    <a href="/sitios" className="profileLink">
+                      Administra tus sitios
+                    </a>
+                  </h3>
+                  <p>Da de alta y gestiona tus sitios</p>
+                </div>
+              )}
+            </div>
+            <div className="row">
+              <div className="col info">
+                <h3>Invita a tus amigos</h3>
+                <p>Y podrás ganar descuentos para tí</p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col info">
+                <h3>Créditos y descuentos</h3>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col info">
+                <h3>Publica tu anuncio o experiencia</h3>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col info">
+                <h3>Configuración</h3>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col info">
+                <h3>Ayuda</h3>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   else
     return (
       <div>
-      <h1>Este es el componente Profile</h1>
-        <h3> Sigues en el mismo componente pero ya no estas autenticado</h3>
+        <h2>Este es el componente Profile, pero no estas autenticado</h2>
         <Link to="/">Volver al home </Link>
         <FontAwesomeIcon icon={faHome} />
       </div>
