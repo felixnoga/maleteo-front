@@ -10,9 +10,6 @@ import './style.scss'
 const ProfileComponent = () => {
   const [, , removeCookie] = useCookies(['token'])
   const [isAuthenticated, userdetails] = useContext(AuthContext)
-  //const isAuthenticated = useContext(AuthContext)
-
-  //               <img src={userdetails.profile_img} class="rounded float-left" alt="Imagen Perfil"></img>
 
   function handleLogout() {
     //Borra Cokie, de forma que ya no estes mas autenticado
@@ -52,7 +49,16 @@ const ProfileComponent = () => {
                   </h3>
                   <p>Puedes ganar 400€ de media al mes</p>
                 </div>
-              ) : null}
+              ) : (
+                <div className="col info">
+                  <h3>
+                    <a href="/sitios" className="profileLink">
+                      Administra tus sitios
+                    </a>
+                  </h3>
+                  <p>Da de alta y gestiona tus sitios</p>
+                </div>
+              )}
             </div>
             <div className="row">
               <div className="col info">
@@ -87,8 +93,7 @@ const ProfileComponent = () => {
   else
     return (
       <div>
-        <h1>Este es el componente Profile</h1>
-        <h3> Sigues en el mismo componente pero ya no estas autenticado</h3>
+        <h2>Este es el componente Profile, pero no estas autenticado</h2>
         <Link to="/">Volver al home </Link>
         <FontAwesomeIcon icon={faHome} />
       </div>
@@ -96,5 +101,3 @@ const ProfileComponent = () => {
 }
 
 export default ProfileComponent
-
-// src=
