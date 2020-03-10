@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 
@@ -8,8 +8,23 @@ function KeeperForm() {
   /************** STATES ************/
 
   const [pictureNames, setPictureNames] = useState([])
-  const [keeperProperty, setKeeperProperty] = useState()
-  const [keeperSpace, setKeeperSpace] = useState()
+  const [keeperTitle, setKeeperTitle] = useState()
+  const [location, setLocation] = useState({
+    coordinates: []
+  })
+  const [keeperData, setKeeperData] = useState({
+    location,
+    property: '',
+    type: '',
+    space_img: [],
+    name: '',
+    region: '',
+    street: '',
+    city: '',
+    state: '',
+    country: ''
+  })
+
   const [show, setShow] = useState(false)
 
   /**************** MODAL FUNCTIONS **************/
@@ -30,17 +45,28 @@ function KeeperForm() {
 
   function handleKeeperProperty(e) {
     const property = e.target.value
-    setKeeperProperty(property)
+    setKeeperData({ ...keeperData, property })
   }
 
-  function handleKeeperSpace(e) {
-    const space = e.target.value
-    setKeeperSpace(space)
+  function handleKeeperType(e) {
+    const type = e.target.value
+    setKeeperData({ ...keeperData, type })
   }
 
   function handleAdressSelect() {}
 
-  console.log(keeperSpace, keeperProperty)
+  function handleTitle(e) {
+    const inputTitle = e.target.value
+    const title = inputTitle.trim()
+    setKeeperTitle(title)
+  }
+
+  useEffect(() => {
+    setKeeperData({ ...keeperData, name: keeperTitle })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keeperTitle])
+
+  console.log(keeperData)
 
   /************* SUBMIT FUNCTION ****************/
 
@@ -51,11 +77,11 @@ function KeeperForm() {
           <div className="col-6 pl-4 col-sm-4 offset-sm-3">
             <strong>Describe tu Espacio</strong>
 
-            {keeperProperty && keeperSpace ? (
+            {keeperData.property && keeperData.type ? (
               <div className="mt-3">
                 <ul>
-                  <li>{keeperProperty}</li>
-                  <li>{keeperSpace}</li>
+                  <li>{keeperData.property}</li>
+                  <li>{keeperData.type}</li>
                 </ul>
               </div>
             ) : null}
@@ -67,7 +93,9 @@ function KeeperForm() {
               className="text-white"
               onClick={handleShow}
             >
-              {!keeperProperty && !keeperSpace ? 'Continuar' : 'Modificar'}
+              {!keeperData.property && !keeperData.type
+                ? 'Continuar'
+                : 'Modificar'}
             </Button>
           </div>
         </div>
@@ -100,7 +128,7 @@ function KeeperForm() {
                 <select
                   className="custom-select"
                   id="keeperSpace"
-                  onChange={handleKeeperSpace}
+                  onChange={handleKeeperType}
                 >
                   <option defaultValue="Selecciona una opcion">
                     Selecciona una opción
@@ -118,7 +146,7 @@ function KeeperForm() {
                 variant="primary"
                 onClick={handleClose}
                 className="text-white"
-                disabled={!keeperProperty || !keeperSpace}
+                disabled={!keeperData.property || !keeperData.type}
               >
                 Guardar Cambios
               </Button>
@@ -206,6 +234,7 @@ function KeeperForm() {
             type="text"
             className="form-control bg-white border-right-0 border-left-0 border-top-0"
             id="kepperTitle"
+            onChange={handleTitle}
           />
         </div>
 
