@@ -11,8 +11,7 @@ function KeeperForm() {
   /************** STATES ************/
 
   const [pictureNames, setPictureNames] = useState([]) //this state is jusf for render the picture names in Front app
-  const [inputPictures, setInputPictures] = useState([])
-  const formData = new FormData()
+  // const [inputPictures, setInputPictures] = useState([])
 
   //state to send to Back app
   const [keeperData, setKeeperData] = useState({
@@ -40,27 +39,30 @@ function KeeperForm() {
   function handleKeeperPictures(e) {
     const inputFiles = e.target.files
     // const files = []
+    const formData = new FormData()
 
-    for (let i = 0; i <= inputFiles.length - 1; i++) {
-      let inputFile = inputFiles[i]
-      // files.push(inputFile)
-      setInputPictures(prevState => [...prevState, inputFile])
-    }
+    // for (let i = 0; i <= inputFiles.length - 1; i++) {
+    //   let inputFile = inputFiles[i]
+    //   setInputPictures(prevState => [...prevState, inputFile])
+    // }
 
     for (let i = 0; i <= inputFiles.length - 1; i++) {
       let inputPictureName = inputFiles[i].name
       setPictureNames(prevState => [...prevState, inputPictureName])
     }
 
-    console.log('lo que nevio a la Api')
-    console.log(inputFiles)
-    submitPictures(inputPictures)
+    for (const fileIndex in inputFiles) {
+      formData.append(inputFiles.name, inputFiles[fileIndex])
+      console.log(inputFiles[fileIndex])
+    }
+
+    submitPictures(formData)
   }
 
-  async function submitPictures(state) {
-    const filesUrl = await submitFiles(state)
+  async function submitPictures(data) {
+    const filesUrl = await submitFiles(data)
 
-    console.log(filesUrl)
+    // console.log(filesUrl)
   }
 
   function handleKeeperProperty(e) {

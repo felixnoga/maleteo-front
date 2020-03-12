@@ -25,7 +25,7 @@ function App() {
           <Route exact path="/login" component={LoginForm} />
           <Route exact path="/register" component={RegisterForm} />
           <Route exact path="/profile" component={ProfileComponent} />
-          <Route exact path="/addkeeper" component={KeeperForm} />
+          <Route exact path="/toguardian" component={KeeperForm} />
           <Route exact path="/search" component={Search} />
           <Route exact path="/booking" component={BookingComponent} />
           <Route exact path="/" component={Home} />

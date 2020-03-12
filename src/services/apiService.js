@@ -45,8 +45,11 @@ export const getNearestSites = location => {
 
 export const submitFiles = files => {
   return Axios.post(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, files, {
-    headers: { Accept: 'application/json', 'Content-type': 'application/json' }
+    headers: {
+      Accept: 'application/json',
+      'Content-type': 'application/json'
+    }
   })
-    .then(res => res.data)
+    .then(res => console.log(res.data))
     .catch(e => console.log(e.message))
 }
