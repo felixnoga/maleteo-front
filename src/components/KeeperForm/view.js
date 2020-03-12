@@ -3,14 +3,18 @@ import { Modal, Button } from 'react-bootstrap'
 import GooglePlacesAutocomplete, {
   geocodeByAddress
 } from 'react-google-places-autocomplete'
+import { submitFiles } from './../../services/apiService'
 
 import './style.scss'
 
 function KeeperForm() {
   /************** STATES ************/
 
-  const [pictureNames, setPictureNames] = useState([])
+  const [pictureNames, setPictureNames] = useState([]) //this state is jusf for render the picture names in Front app
+  const [inputPictures, setInputPictures] = useState([])
+  const formData = new FormData()
 
+  //state to send to Back app
   const [keeperData, setKeeperData] = useState({
     location: { coordinates: [] },
     property: '',
@@ -35,11 +39,28 @@ function KeeperForm() {
 
   function handleKeeperPictures(e) {
     const inputFiles = e.target.files
+    // const files = []
+
+    for (let i = 0; i <= inputFiles.length - 1; i++) {
+      let inputFile = inputFiles[i]
+      // files.push(inputFile)
+      setInputPictures(prevState => [...prevState, inputFile])
+    }
 
     for (let i = 0; i <= inputFiles.length - 1; i++) {
       let inputPictureName = inputFiles[i].name
       setPictureNames(prevState => [...prevState, inputPictureName])
     }
+
+    console.log('lo que nevio a la Api')
+    console.log(inputFiles)
+    submitPictures(inputPictures)
+  }
+
+  async function submitPictures(state) {
+    const filesUrl = await submitFiles(state)
+
+    console.log(filesUrl)
   }
 
   function handleKeeperProperty(e) {
@@ -74,29 +95,22 @@ function KeeperForm() {
 
     geocodeByAddress(address.description)
       .then(result => {
+        const locationLatLng = result[0].geometry.location
         const addressComponents = result[0].address_components
 
-        /************** PREPARING THE ARRAY FOR LAT AND LNG COORDINATES (KEEPERDATA - LOCATION) ************/
-
-        const currentLat = result[0].geometry.location.lat()
-        const currentLng = result[0].geometry.location.lng()
+        const currentLat = locationLatLng.lat()
+        const currentLng = locationLatLng.lng()
         arrLatLng.push(currentLat, currentLng)
-
-        /************** CONCATENATING FULL STREET (NAME + NUMBER) **********/
 
         addressStreet = addressComponents[1].long_name
         addressNumber = addressComponents[0].long_name
         const street = addressStreet.concat(` ${addressNumber}`)
-
-        /************* CONSTS FOR THE REST OF KEEPERDATA STATE ***********/
 
         const town = addressComponents[2].long_name
         const city = addressComponents[3].long_name
         const state = addressComponents[4].long_name
         const country = addressComponents[5].long_name
         const zip = addressComponents[6].long_name
-
-        /************** SET KEPPER ADDRESS INFO **********/
 
         if (town === city) {
           setKeeperData({
@@ -124,8 +138,6 @@ function KeeperForm() {
 
       .catch(error => console.log(error))
   }
-
-  console.log(keeperData)
 
   /************* SUBMIT FUNCTION ****************/
 
@@ -254,7 +266,7 @@ function KeeperForm() {
               <input
                 type="file"
                 id="keeperPictures"
-                accept="image/png, image/jpeg"
+                accept="image/png, image/jpeg, 'image/jpg'"
                 multiple
                 onChange={handleKeeperPictures}
                 // value={pictureNames}
@@ -320,6 +332,20 @@ function KeeperForm() {
           />
         </div>
       </form>
+
+      <button
+        type="submit"
+        className="btn btn-primary text-white"
+        id="submitKeeperData"
+        disabled={
+          !keeperData.location ||
+          !keeperData.property ||
+          !keeperData.type ||
+          !keeperData.name
+        }
+      >
+        Enviar
+      </button>
     </div>
   )
 }
