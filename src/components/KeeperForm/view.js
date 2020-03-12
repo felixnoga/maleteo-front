@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Modal, Button } from 'react-bootstrap'
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
+import GooglePlacesAutocomplete, {
+  geocodeByAddress
+} from 'react-google-places-autocomplete'
 
 import './style.scss'
 
@@ -8,21 +10,18 @@ function KeeperForm() {
   /************** STATES ************/
 
   const [pictureNames, setPictureNames] = useState([])
-  const [keeperTitle, setKeeperTitle] = useState()
-  const [location, setLocation] = useState({
-    coordinates: []
-  })
+
   const [keeperData, setKeeperData] = useState({
-    location,
+    location: { coordinates: [] },
     property: '',
     type: '',
     space_img: [],
     name: '',
-    region: '',
     street: '',
     city: '',
     state: '',
-    country: ''
+    country: '',
+    zip: ''
   })
 
   const [show, setShow] = useState(false)
@@ -34,12 +33,12 @@ function KeeperForm() {
 
   /**************** HANDLE FUNCTIONS *****************/
 
-  function handlePictureName(e) {
+  function handleKeeperPictures(e) {
     const inputFiles = e.target.files
 
     for (let i = 0; i <= inputFiles.length - 1; i++) {
       let inputPictureName = inputFiles[i].name
-      setPictureNames([...pictureNames, inputPictureName])
+      setPictureNames(prevState => [...prevState, inputPictureName])
     }
   }
 
@@ -53,18 +52,78 @@ function KeeperForm() {
     setKeeperData({ ...keeperData, type })
   }
 
-  function handleAdressSelect() {}
-
   function handleTitle(e) {
     const inputTitle = e.target.value
     const title = inputTitle.trim()
-    setKeeperTitle(title)
+
+    setKeeperData({ ...keeperData, name: title })
   }
 
-  useEffect(() => {
-    setKeeperData({ ...keeperData, name: keeperTitle })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keeperTitle])
+  /***************** GOOGLEPLACESAUTOCOMPLETE HANDLE FUNCTION *****************/
+
+  /**
+   *geocodeByAddress Function
+   * @param {String} address
+   * @return {Promise}
+   */
+
+  function handleAdressSelected(address) {
+    const arrLatLng = []
+    let addressStreet = ''
+    let addressNumber = ''
+
+    geocodeByAddress(address.description)
+      .then(result => {
+        const addressComponents = result[0].address_components
+
+        /************** PREPARING THE ARRAY FOR LAT AND LNG COORDINATES (KEEPERDATA - LOCATION) ************/
+
+        const currentLat = result[0].geometry.location.lat()
+        const currentLng = result[0].geometry.location.lng()
+        arrLatLng.push(currentLat, currentLng)
+
+        /************** CONCATENATING FULL STREET (NAME + NUMBER) **********/
+
+        addressStreet = addressComponents[1].long_name
+        addressNumber = addressComponents[0].long_name
+        const street = addressStreet.concat(` ${addressNumber}`)
+
+        /************* CONSTS FOR THE REST OF KEEPERDATA STATE ***********/
+
+        const town = addressComponents[2].long_name
+        const city = addressComponents[3].long_name
+        const state = addressComponents[4].long_name
+        const country = addressComponents[5].long_name
+        const zip = addressComponents[6].long_name
+
+        /************** SET KEPPER ADDRESS INFO **********/
+
+        if (town === city) {
+          setKeeperData({
+            ...keeperData,
+            location: { coordinates: arrLatLng },
+            street,
+            city,
+            state,
+            country,
+            zip
+          })
+        } else {
+          const fullCity = town.concat(`, ${city}`)
+          setKeeperData({
+            ...keeperData,
+            location: { coordinates: arrLatLng },
+            street,
+            city: fullCity,
+            state,
+            country,
+            zip
+          })
+        }
+      })
+
+      .catch(error => console.log(error))
+  }
 
   console.log(keeperData)
 
@@ -78,7 +137,7 @@ function KeeperForm() {
             <strong>Describe tu Espacio</strong>
 
             {keeperData.property && keeperData.type ? (
-              <div className="mt-3">
+              <div className="mt-3" id="picturesNames">
                 <ul>
                   <li>{keeperData.property}</li>
                   <li>{keeperData.type}</li>
@@ -100,7 +159,7 @@ function KeeperForm() {
           </div>
         </div>
 
-        {/********************* MODAL ********************** */}
+        {/********************* MODAL ************************/}
         <>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton id="modalHeader">
@@ -113,6 +172,7 @@ function KeeperForm() {
                   className="custom-select"
                   id="keeperProperty"
                   onChange={handleKeeperProperty}
+                  value={keeperData.property}
                 >
                   <option defaultValue="Selecciona una opcion">
                     Selecciona una opcion
@@ -129,6 +189,7 @@ function KeeperForm() {
                   className="custom-select"
                   id="keeperSpace"
                   onChange={handleKeeperType}
+                  value={keeperData.type}
                 >
                   <option defaultValue="Selecciona una opcion">
                     Selecciona una opción
@@ -164,9 +225,9 @@ function KeeperForm() {
             inputClassName={
               'form-control border-right-0 border-left-0 border-top-0'
             }
-            placeholeder="Dirección"
+            placeholder="Dirección"
             onSelect={address => {
-              handleAdressSelect(address)
+              handleAdressSelected(address)
             }}
             renderSuggestions={(active, suggestions, onSelectSuggestion) => (
               <ul className="list-group mt-4" id="suggestion-list">
@@ -195,7 +256,8 @@ function KeeperForm() {
                 id="keeperPictures"
                 accept="image/png, image/jpeg"
                 multiple
-                onChange={handlePictureName}
+                onChange={handleKeeperPictures}
+                // value={pictureNames}
               />
               <label htmlFor="keeperPictures" id="pictureLabel">
                 <p>
@@ -235,6 +297,7 @@ function KeeperForm() {
             className="form-control bg-white border-right-0 border-left-0 border-top-0"
             id="kepperTitle"
             onChange={handleTitle}
+            // value={keeperData.name}
           />
         </div>
 
