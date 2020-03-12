@@ -3,7 +3,6 @@ import { Modal, Button } from 'react-bootstrap'
 import GooglePlacesAutocomplete, {
   geocodeByAddress
 } from 'react-google-places-autocomplete'
-import { submitFiles } from './../../services/apiService'
 
 import './style.scss'
 
@@ -36,33 +35,13 @@ function KeeperForm() {
 
   /**************** HANDLE FUNCTIONS *****************/
 
-  function handleKeeperPictures(e) {
+  function handlePicturesName(e) {
     const inputFiles = e.target.files
-    // const files = []
-    const formData = new FormData()
-
-    // for (let i = 0; i <= inputFiles.length - 1; i++) {
-    //   let inputFile = inputFiles[i]
-    //   setInputPictures(prevState => [...prevState, inputFile])
-    // }
 
     for (let i = 0; i <= inputFiles.length - 1; i++) {
       let inputPictureName = inputFiles[i].name
       setPictureNames(prevState => [...prevState, inputPictureName])
     }
-
-    for (const fileIndex in inputFiles) {
-      formData.append(inputFiles.name, inputFiles[fileIndex])
-      console.log(inputFiles[fileIndex])
-    }
-
-    submitPictures(formData)
-  }
-
-  async function submitPictures(data) {
-    const filesUrl = await submitFiles(data)
-
-    // console.log(filesUrl)
   }
 
   function handleKeeperProperty(e) {
@@ -143,9 +122,51 @@ function KeeperForm() {
 
   /************* SUBMIT FUNCTION ****************/
 
+  async function submitData(e) {
+    e.preventDefault()
+    const { elements } = e.target
+    const formKeeperData = new FormData()
+
+    formKeeperData.append('location', keeperData.location)
+    formKeeperData.append('property', keeperData.property)
+    formKeeperData.append('type', keeperData.type)
+    formKeeperData.append('name', keeperData.name)
+    formKeeperData.append('street', keeperData.street)
+    formKeeperData.append('city', keeperData.city)
+    formKeeperData.append('state', keeperData.state)
+    formKeeperData.append('country', keeperData.country)
+    formKeeperData.append('zip', keeperData.zip)
+
+    for (const inputField of elements) {
+      if (inputField.type === 'file') {
+        for (const fileIndex in inputField.files) {
+          formKeeperData.append(inputField.name, inputField.files[fileIndex])
+        }
+      }
+    }
+
+    fetch('http://localhost:8000/file/upload', {
+      method: 'POST',
+      body: formKeeperData
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Error uploading file')
+        }
+
+        return res.json()
+      })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
+  }
+
   return (
     <div className="container-fluid mt-5">
-      <form>
+      <form onSubmit={submitData}>
         <div className="form-group row " id="describeSpace">
           <div className="col-6 pl-4 col-sm-4 offset-sm-3">
             <strong>Describe tu Espacio</strong>
@@ -270,7 +291,7 @@ function KeeperForm() {
                 id="keeperPictures"
                 accept="image/png, image/jpeg, 'image/jpg'"
                 multiple
-                onChange={handleKeeperPictures}
+                onChange={handlePicturesName}
                 // value={pictureNames}
               />
               <label htmlFor="keeperPictures" id="pictureLabel">
@@ -333,21 +354,21 @@ function KeeperForm() {
             id="KeeperServices"
           />
         </div>
+        <button
+          type="submit"
+          className="btn btn-primary text-white"
+          id="submitKeeperData"
+          onClick
+          disabled={
+            !keeperData.location ||
+            !keeperData.property ||
+            !keeperData.type ||
+            !keeperData.name
+          }
+        >
+          Enviar
+        </button>
       </form>
-
-      <button
-        type="submit"
-        className="btn btn-primary text-white"
-        id="submitKeeperData"
-        disabled={
-          !keeperData.location ||
-          !keeperData.property ||
-          !keeperData.type ||
-          !keeperData.name
-        }
-      >
-        Enviar
-      </button>
     </div>
   )
 }
