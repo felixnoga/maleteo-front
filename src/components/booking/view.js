@@ -22,7 +22,9 @@ const calculateTotalPrice = (days, numBaggages, firstDayPrice, extraDayPrice)=>{
 const BookingComponent = (props) => {
     const [globalContext, setGlobalContext] = useContext(GlobalContext);
     const [authenticated, user] = useContext(AuthContext);
-    const [currentBookingState, setCurrentBookingState] = useState({});
+    const [currentBookingState, setCurrentBookingState] = useState({
+
+    });
     const [bookingSentState, setBookingSentState] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies();
     const {token} = cookies;
@@ -51,6 +53,7 @@ const BookingComponent = (props) => {
     };
 
     const handleBooking = async () => {
+        // console.log(currentBookingState.suitcasesPieces);
         const data = {
             startDate: currentBookingState.startDate,
             endDate:  currentBookingState.endDate,
