@@ -6,7 +6,8 @@ import { login } from '../../api/auth'
 
 import './style.scss'
 
-function LoginForm({ history }) {
+function LoginForm() {
+  let history = useHistory()
   const [cookies, setCookie] = useCookies(['token'])
   const { token } = cookies
   const [error, setError] = useState(null)

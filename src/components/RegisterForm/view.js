@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useCookies } from 'react-cookie'
-import { withRouter } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 
 import { register } from '../../api/auth'
 
 import './style.scss'
 
-function RegisterForm({ history }) {
+function RegisterForm() {
+  let history = useHistory()
   const [cookies, setCookie] = useCookies(['token'])
   const { token } = cookies
   const [error, setError] = useState(null)
