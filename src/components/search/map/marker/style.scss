@@ -1,0 +1,28 @@
+#marker-number {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.marker-site {
+  width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: 10;
+
+  background-color: #f9a519;
+  padding: 0.5rem;
+  border-radius: 2px;
+  color: white;
+  img {
+    display: block;
+    width: 33%;
+  }
+  h5 {
+    width: 66%;
+  }
+}
+
+.site-number {
+  margin-top: 0.5rem;
+}
