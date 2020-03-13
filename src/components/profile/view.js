@@ -18,6 +18,14 @@ const ProfileComponent = () => {
     removeCookie('token')
   }
 
+    function handleClick(e) {
+      e.preventDefault();
+      console.log('The link to become a keeper was clicked.');
+      //TODO Implemente call to API update Users as a Keeper
+    }
+
+
+
   if (isAuthenticated)
     return (
       <div className="container-fluid profileContainer">
@@ -43,7 +51,7 @@ const ProfileComponent = () => {
               {!userdetails.isKeeper ? (
                 <div className="col info">
                   <h3>
-                    <a href="/toguardian" className="profileLink">
+                    <a href="/toguardian" className="profileLink" onClick={handleClick}>
                       Convierte en guardian
                     </a>
                   </h3>
@@ -88,6 +96,7 @@ const ProfileComponent = () => {
             </div>
           </div>
         </div>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     )
   else

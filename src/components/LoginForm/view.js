@@ -1,44 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
+import React, { useState, useEffect } from 'react'
+import { useCookies } from 'react-cookie'
+import { useHistory } from "react-router-dom"
 
-import { login } from '../../api/auth';
+import { login } from '../../api/auth'
 
 import './style.scss'
 
 function LoginForm({ history }) {
-
-  const [cookies, setCookie] = useCookies(['token']);
-  const { token } = cookies;
-  const [error, setError] = useState(null);
-
+  const [cookies, setCookie] = useCookies(['token'])
+  const { token } = cookies
+  const [error, setError] = useState(null)
 
   const [loginForm, setLoginForm] = useState({
     email: '',
-    password: '',
-
+    password: ''
   })
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      const res = await login(loginForm);
-      console.log ("En login form, Tengo el token de autenticacion "+res.token+" y pongo la cookie")
-      setCookie('token', res.token);
+      const res = await login(loginForm)
+      console.log(
+        'En login form, Tengo el token de autenticacion ' +
+          res.token +
+          ' y pongo la cookie'
+      )
+      setCookie('token', res.token)
       // Al ponerse la cookie, se ejecutara el UserEffect del Contexto de Autenticacion
-
     } catch (e) {
-      setError(e.message);
+      setError(e.message)
     }
   }
-  
-  useEffect(() => {
-    console.log ("UseEffect de nuevo token o de cambio de history en formulario login")
-    if (token) {
-      history.push('/profile');
-    }
-  }, [token, history]);
 
+  useEffect(() => {
+    console.log(
+      'UseEffect de nuevo token o de cambio de history en formulario login'
+    )
+    if (token) {
+      history.push('/profile')
+    }
+  }, [token, history])
 
   function handleEmail(e) {
     const { value } = e.target
@@ -48,8 +50,7 @@ function LoginForm({ history }) {
   function handlePassword(e) {
     const { value } = e.target
     const password = value.trim()
-    setLoginForm({ ...loginForm, password : password })
-
+    setLoginForm({ ...loginForm, password: password })
   }
 
   console.log(loginForm)
@@ -58,8 +59,11 @@ function LoginForm({ history }) {
     <div className="container-fluid" id="register_container">
       <form onSubmit={handleSubmit}>
         <div className="col-12">
-          <h3>Autentificate en Maleteo para acceder a toda su funcionalidad</h3>
+          <h3>Inicia Sesión ahora</h3>
         </div>
+        <button class="loginBtn loginBtn--facebook">Login with Facebook</button>
+
+        <button class="loginBtn loginBtn--google">Login with Google</button>
 
         <div className="form-group">
           <div className="col-sm-6">
@@ -71,7 +75,7 @@ function LoginForm({ history }) {
               onChange={handleEmail}
             ></input>
           </div>
-  
+
           <div className="col-sm-6">
             <label htmlFor="registerPassword">Contraseña</label>
             <input
@@ -85,23 +89,20 @@ function LoginForm({ history }) {
               minusculas y numeros
             </small>
           </div>
-  
+
           <div className="form-group">
             <button
               type="submit"
               className="btn btn-primary text-white"
-              disabled={
-                !loginForm.email ||
-                !loginForm.password
-              }
+              disabled={!loginForm.email || !loginForm.password}
             >
               login
             </button>
           </div>
         </div>
         {error ? (
-        <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>
-      ) : null}
+          <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>
+        ) : null}
       </form>
     </div>
   )

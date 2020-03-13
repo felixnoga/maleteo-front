@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useCookies } from 'react-cookie'
+import { withRouter } from "react-router-dom"
 
 import { register } from '../../api/auth'
 
@@ -172,11 +173,18 @@ function RegisterForm({ history }) {
 
   return (
     <div className="container-fluid" id="register_container">
+     
       <form onSubmit={handleSubmit}>
         <div className="col-12">
           <h3>Únete a Maleteo y disfruta de sus ventajas</h3>
         </div>
+        <button class="loginBtn loginBtn--facebook">
+  Login with Facebook
+</button>
 
+<button class="loginBtn loginBtn--google">
+  Login with Google
+</button>
         <div className="form-group">
           <div className="col-sm-6">
             <label htmlFor="registerEmail">Correo Electronico</label>
