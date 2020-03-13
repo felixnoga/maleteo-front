@@ -2,9 +2,8 @@ import React, {useContext, useEffect, useState} from 'react'
 import { useCookies } from 'react-cookie'
 import { AuthContext } from '../../context/AuthContext'
 import {getUserBookings} from "../../services/apiService";
-import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faEuroSign, faCalendar, faQuestion, faCheck, faTimes, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faEuroSign, faCalendar, faQuestion, faCheck, faTimes, faThumbsUp, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 import moment from "moment";
 
@@ -51,12 +50,6 @@ const ProfileComponent = () => {
 
    }, [userdetails]);
 
-  function handleLogout() {
-    //Borra Cokie, de forma que ya no estes mas autenticado
-    //Al borrar la cookie, automagicamente se invocara el UserEffect que tenemos en
-    //el contexto authentication, y se actualizará ahí el valor de isAuthenticated
-    removeCookie('token')
-  }
 
     function handleClick(e) {
       e.preventDefault();
@@ -163,15 +156,13 @@ const ProfileComponent = () => {
             </div>
           </div>
         </div>
-        <button onClick={handleLogout}>Logout</button>
       </div>
     )
   else
     return (
       <div>
-        <h2>Este es el componente Profile, pero no estas autenticado</h2>
-        <Link to="/">Volver al home </Link>
-        <FontAwesomeIcon icon={faHome} />
+        <h2>  <FontAwesomeIcon icon={faSpinner} /> Pending Autenticacion ..... </h2>
+       
       </div>
     )
 }

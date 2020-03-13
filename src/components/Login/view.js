@@ -10,7 +10,7 @@ import ProfileComponent from "../profile";
 import './style.scss'
 
 const Login = () => {
-  const [, , removeCookie] = useCookies(['token'])
+
   const [isAuthenticated] = useContext(AuthContext)
 
   
