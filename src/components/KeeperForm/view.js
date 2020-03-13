@@ -17,7 +17,6 @@ function KeeperForm() {
     location: { coordinates: [] },
     property: '',
     type: '',
-    space_img: [],
     name: '',
     street: '',
     city: '',
@@ -122,7 +121,7 @@ function KeeperForm() {
 
   /************* SUBMIT FUNCTION ****************/
 
-  async function submitData(e) {
+  function submitData(e) {
     e.preventDefault()
     const { elements } = e.target
     const formKeeperData = new FormData()
@@ -145,7 +144,7 @@ function KeeperForm() {
       }
     }
 
-    fetch('http://localhost:8000/file/upload', {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/site`, {
       method: 'POST',
       body: formKeeperData
     })
@@ -354,20 +353,21 @@ function KeeperForm() {
             id="KeeperServices"
           />
         </div>
-        <button
-          type="submit"
-          className="btn btn-primary text-white"
-          id="submitKeeperData"
-          onClick
-          disabled={
-            !keeperData.location ||
-            !keeperData.property ||
-            !keeperData.type ||
-            !keeperData.name
-          }
-        >
-          Enviar
-        </button>
+        <div className="form-group">
+          <button
+            type="submit"
+            className="btn btn-primary text-white"
+            id="submitKeeperData"
+            disabled={
+              !keeperData.location ||
+              !keeperData.property ||
+              !keeperData.type ||
+              !keeperData.name
+            }
+          >
+            Enviar
+          </button>
+        </div>
       </form>
     </div>
   )
