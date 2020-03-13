@@ -39,7 +39,7 @@ export const putNewBooking = (data) => {
         {
             startDate: data.startDate,
             endDate: data.endDate,
-            suitcasePieces: data.suitcasesPieces,
+            suitcasesPieces: data.suitcasesPieces,
             keeper: data.keeper,
             site: data.site
         },
