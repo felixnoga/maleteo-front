@@ -6,7 +6,7 @@ import { ArticleContextProvider } from '../../context/articleContext'
 
 const Home = () => {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid pb-5">
       <FormFindKeeper />
       <ArticleContextProvider>
         <ArticleList />

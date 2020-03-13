@@ -1,15 +1,55 @@
-import React, { useContext } from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import { useCookies } from 'react-cookie'
 import { AuthContext } from '../../context/AuthContext'
+import {getUserBookings} from "../../services/apiService";
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faEuroSign, faCalendar, faQuestion, faCheck, faTimes, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+
+import moment from "moment";
 
 import './style.scss'
 
+const calculateDays = (start, end) => {
+  const a = moment(start);
+  const b = moment(end);
+  return  b.diff(a, 'days');
+};
+
+const calculateTotalPrice = (days, numBaggages, firstDayPrice, extraDayPrice)=>{
+  if(days===1) {
+    return firstDayPrice*numBaggages;
+  }
+  return firstDayPrice*numBaggages + extraDayPrice*numBaggages*(days-1)
+};
+
+const STATUS_ICONS = {
+  Pendiente: faQuestion,
+  Aprobada: faThumbsUp,
+  Rechazada: faTimes,
+  Finalizada: faCheck
+
+};
+
 const ProfileComponent = () => {
-  const [, , removeCookie] = useCookies(['token'])
-  const [isAuthenticated, userdetails] = useContext(AuthContext)
+  const [cookies, , removeCookie] = useCookies(['token']);
+  const [bookingsState, setBookingsState] = useState([]);
+  const [isAuthenticated, userdetails] = useContext(AuthContext);
+
+  const {token} = cookies;
+
+  useEffect(()=> {
+    const retrieveBookings = async () => {
+
+      const bookings = await getUserBookings(token);
+      setBookingsState(bookings);
+    };
+    if(userdetails!==undefined && userdetails!==null) {
+      retrieveBookings();
+    }
+
+
+   }, [userdetails]);
 
   function handleLogout() {
     //Borra Cokie, de forma que ya no estes mas autenticado
@@ -67,6 +107,33 @@ const ProfileComponent = () => {
                   <p>Da de alta y gestiona tus sitios</p>
                 </div>
               )}
+            </div>
+            <div className="row">
+              <div className="col">
+                <h3>Tus reservas</h3>
+
+
+                  {bookingsState!==undefined ?
+                    bookingsState.map((booking) => {
+                    return (
+                    <div className="card" key={booking._id}>
+                      <div className="card-body bg-primary text-white">
+                        <h4 className="card-title">{moment(booking.startDate).format('DD MMMM')} al {moment(booking.endDate).format('DD MMMM')} <span className="d-inline-block float-right small"><FontAwesomeIcon icon={STATUS_ICONS[booking.status]} /> {booking.status}</span></h4>
+                        <h5 className="card-subtitle">En "{booking.site.name}" de {booking.keeper.name} ({booking.site.street}, {booking.site.city})</h5>
+                      </div>
+                        <div className="card-body">
+
+                          <p className="card-text"><FontAwesomeIcon icon={faCalendar} size={"2x"} className="text-primary"/> {calculateDays(booking.startDate, booking.endDate)} días.</p>
+                          <p><FontAwesomeIcon icon={faEuroSign} size={"2x"} className="text-primary"/> Tu precio: {calculateTotalPrice(calculateDays(booking.startDate, booking.endDate), booking.suitcasesPieces, booking.site.firstDayPrice, booking.site.extraDayPrice)} <FontAwesomeIcon icon={faEuroSign} /> por tus {booking.suitcasesPieces} maletas.</p>
+
+                        </div>
+                    </div>)
+
+                  }):null
+                  }
+
+
+              </div>
             </div>
             <div className="row">
               <div className="col info">

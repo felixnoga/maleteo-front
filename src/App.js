@@ -9,10 +9,11 @@ import ProfileComponent from "./components/profile";
 import BookingComponent from "./components/booking";
 import NotFound from './components/NotFound';
 import Navbar from "./components/navbar";
-
+import SecuredRoute from "./components/securedRoute";
 import {GlobalContextProvider} from "./context/globalContext";
 
 import './App.css'
+
 
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
                 <Route exact path="/register" component={RegisterForm} />
                 <Route exact path="/profile" component={ProfileComponent} />
                 <Route exact path="/search" component={Search} />
-                <Route exact path="/booking" component={BookingComponent} />
+                <SecuredRoute exact path="/booking" component={BookingComponent} />
                 <Route exact path="/" component={Home} />
                 <Route component={NotFound} />
 
