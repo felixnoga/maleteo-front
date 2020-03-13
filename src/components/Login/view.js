@@ -19,7 +19,7 @@ const Login = () => {
   }
 
   return (
-    <div className="container-fluid profileContainer">
+    <div className="container-fluid profileContainer pb-5 mb-5">
       <h1>Componente Sign-In </h1>
       <p>
         El componente es un "placeholder", todavia esta en construcción, hay que
