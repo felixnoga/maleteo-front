@@ -8,7 +8,7 @@ const Search = () => {
     const [globalContext, setGlobalContext] = useContext(GlobalContext);
 
     return(
-        <div>
+        <div className="container-fluid pb-5">
             <h1>Encuentra tu guardián</h1>
             <Map/>
         </div>

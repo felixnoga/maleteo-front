@@ -30,7 +30,7 @@ export function GlobalContextProvider ({children}) {
                 console.log("SI HAY GEOLOCATION");
             });
         } else {
-            setState({...state, currentBooking: {...state.currentBooking, locationCoordinates: {lat:40, lon:-3}}});
+            setState({...state, currentBooking: {...state.currentBooking, locationCoordinates: {lat:40.45, lon:-3.65}}});
             console.log("NO HAY GEOLOCATION");
         }
 
