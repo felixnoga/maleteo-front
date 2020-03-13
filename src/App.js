@@ -9,11 +9,11 @@ import ProfileComponent from './components/profile'
 import BookingComponent from './components/booking'
 import NotFound from './components/NotFound'
 import Navbar from './components/navbar'
-
+import KeeperForm from './components/KeeperForm'
+import SecuredRoute from './components/securedRoute'
 import { GlobalContextProvider } from './context/globalContext'
 
 import './App.css'
-import KeeperForm from './components/KeeperForm'
 
 function App() {
   return (

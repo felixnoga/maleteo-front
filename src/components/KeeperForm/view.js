@@ -3,6 +3,8 @@ import { Modal, Button } from 'react-bootstrap'
 import GooglePlacesAutocomplete, {
   geocodeByAddress
 } from 'react-google-places-autocomplete'
+import { useCookies } from 'react-cookie'
+import { submitKeeperData } from './../../services/apiService'
 
 import './style.scss'
 
@@ -24,6 +26,10 @@ function KeeperForm() {
     country: '',
     zip: ''
   })
+
+  const [keeperCookies, setKeeperCookies] = useCookies(['token'])
+
+  const { token } = keeperCookies
 
   const [show, setShow] = useState(false)
 
@@ -121,7 +127,7 @@ function KeeperForm() {
 
   /************* SUBMIT FUNCTION ****************/
 
-  function submitData(e) {
+  async function submitData(e) {
     e.preventDefault()
     const { elements } = e.target
     const formKeeperData = new FormData()
@@ -144,23 +150,30 @@ function KeeperForm() {
       }
     }
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/site`, {
-      method: 'POST',
-      body: formKeeperData
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Error uploading file')
-        }
+    const submitKeeper = await submitKeeperData(token, formKeeperData)
 
-        return res.json()
-      })
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err.message)
-      })
+    // fetch(`${process.env.REACT_APP_BACKEND_URL}/site`, {
+    //   method: 'POST',
+    //   body: formKeeperData,
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //     Autorization: token
+    //   }
+    // })
+    //   .then(res => {
+    //     if (!res.ok) {
+    //       throw new Error('Error uploading file')
+    //     }
+
+    //     return res.json()
+    //   })
+    //   .then(res => {
+    //     console.log(res)
+    //   })
+    //   .catch(err => {
+    //     console.log(err.message)
+    //   })
   }
 
   return (

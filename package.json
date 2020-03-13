@@ -15,6 +15,7 @@
     "dotenv": "^8.2.0",
     "google-map-react": "^1.1.6",
     "loaders.css": "^0.1.2",
+    "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.17",
@@ -25,7 +26,8 @@
     "react-google-places-autocomplete": "^1.6.2",
     "react-loaders": "^3.0.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "react-tabs": "^3.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

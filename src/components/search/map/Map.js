@@ -68,8 +68,9 @@ const Map = () => {
 
 
 
-    const handleBookingOnClick = (id) => {
-        setGlobalState({...globalState, selectedSite: {id}});
+    const handleBookingOnClick = (site) => {
+
+        setGlobalState({...globalState, selectedSite: site});
         history.push('/booking');
     };
 
@@ -157,7 +158,7 @@ const Map = () => {
                                         <div className="card-body text-center">
                                             <hr className="article-divider"/>
                                             <button className="btn btn-primary text-white"
-                                                    onClick={()=>handleBookingOnClick(site._id)}
+                                                    onClick={()=>handleBookingOnClick(site)}
                                             >Reservar Sitio</button>
                                             <div></div>
                                         </div>
