@@ -10,6 +10,7 @@ import BookingComponent from './components/booking'
 import NotFound from './components/NotFound'
 import Navbar from './components/navbar'
 import KeeperForm from './components/KeeperForm'
+import SitesComponent from "./components/sites";
 import SecuredRoute from './components/securedRoute'
 import { GlobalContextProvider } from './context/globalContext'
 
@@ -21,6 +22,7 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
+          <Route exact path="/" component={Home} />
           <Route exact path="/signin" component={Login} />
           <Route exact path="/login" component={LoginForm} />
           <Route exact path="/register" component={RegisterForm} />
@@ -28,7 +30,8 @@ function App() {
           <Route exact path="/toguardian" component={KeeperForm} />
           <Route exact path="/search" component={Search} />
           <Route exact path="/booking" component={BookingComponent} />
-          <Route exact path="/" component={Home} />
+          <Route exact path="/booking" component={BookingComponent} />
+          <Route exact path="/sitios" component={SitesComponent} />
           <Route component={NotFound} />
         </Switch>
       </Router>

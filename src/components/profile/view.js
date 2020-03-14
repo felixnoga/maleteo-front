@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { AuthContext } from '../../context/AuthContext'
-
+import { Link } from 'react-router-dom'
 import {getUserBookings} from "../../services/apiService";
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faEuroSign, faCalendar, faQuestion, faCheck, faTimes, faThumbsUp, faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -50,7 +50,7 @@ const ProfileComponent = () => {
     if (userdetails !== undefined && userdetails !== null) {
       retrieveBookings()
     }
-  }, [userdetails])
+  }, [userdetails]);
 
 
   function handleClick(e) {

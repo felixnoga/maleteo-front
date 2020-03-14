@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
+import {useHistory} from 'react-router-dom'
 import { Modal, Button } from 'react-bootstrap'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import GooglePlacesAutocomplete, {
   geocodeByAddress
 } from 'react-google-places-autocomplete'
@@ -9,23 +12,27 @@ import { submitKeeperData } from './../../services/apiService'
 import './style.scss'
 
 function KeeperForm() {
+  const history = useHistory();
+
   /************** STATES ************/
 
-  const [pictureNames, setPictureNames] = useState([]) //this state is jusf for render the picture names in Front app
-  // const [inputPictures, setInputPictures] = useState([])
+  const [pictureNames, setPictureNames] = useState([]); //this state is jusf for render the picture names in Front app
+  const [sendingState, setSendingState] = useState(false);
 
   //state to send to Back app
-  const [keeperData, setKeeperData] = useState({
-    location: { coordinates: [] },
+  const initialKeeperData = {
+    location: { type: "Point", coordinates: [] },
     property: '',
     type: '',
     name: '',
+    description: '',
     street: '',
     city: '',
     state: '',
     country: '',
     zip: ''
-  })
+  };
+  const [keeperData, setKeeperData] = useState(initialKeeperData);
 
   const [keeperCookies, setKeeperCookies] = useCookies(['token'])
 
@@ -37,6 +44,12 @@ function KeeperForm() {
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
+
+  /**************** HELPER FUNCTIONS **************/
+  const capitalize = (s) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
+  }
 
   /**************** HANDLE FUNCTIONS *****************/
 
@@ -59,11 +72,19 @@ function KeeperForm() {
     setKeeperData({ ...keeperData, type })
   }
 
-  function handleTitle(e) {
-    const inputTitle = e.target.value
-    const title = inputTitle.trim()
+  function handleDescription(e) {
+    const inputDescription = e.target.value
+    const description = inputDescription.trim()
 
-    setKeeperData({ ...keeperData, name: title })
+    setKeeperData({ ...keeperData, description })
+  }
+
+  function handleName(e) {
+    const inputName = e.target.value
+    const name = capitalize(inputName).trim();
+
+    setKeeperData({ ...keeperData, name });
+
   }
 
   /***************** GOOGLEPLACESAUTOCOMPLETE HANDLE FUNCTION *****************/
@@ -87,6 +108,7 @@ function KeeperForm() {
         const currentLat = locationLatLng.lat()
         const currentLng = locationLatLng.lng()
         arrLatLng.push(currentLat, currentLng)
+        console.log(arrLatLng);
 
         addressStreet = addressComponents[1].long_name
         addressNumber = addressComponents[0].long_name
@@ -101,7 +123,7 @@ function KeeperForm() {
         if (town === city) {
           setKeeperData({
             ...keeperData,
-            location: { coordinates: arrLatLng },
+            location: {type: "Point", lat: currentLat, lng: currentLng },
             street,
             city,
             state,
@@ -112,7 +134,7 @@ function KeeperForm() {
           const fullCity = town.concat(`, ${city}`)
           setKeeperData({
             ...keeperData,
-            location: { coordinates: arrLatLng },
+            location: { type: "Point", lat: currentLat, lng: currentLng },
             street,
             city: fullCity,
             state,
@@ -131,11 +153,15 @@ function KeeperForm() {
     e.preventDefault()
     const { elements } = e.target
     const formKeeperData = new FormData()
+    console.log(elements);
 
-    formKeeperData.append('location', keeperData.location)
+    formKeeperData.append('locationType', keeperData.location.type)
+    formKeeperData.append('locationLat', keeperData.location.lat)
+    formKeeperData.append('locationLng', keeperData.location.lng)
     formKeeperData.append('property', keeperData.property)
     formKeeperData.append('type', keeperData.type)
     formKeeperData.append('name', keeperData.name)
+    formKeeperData.append('description', keeperData.description)
     formKeeperData.append('street', keeperData.street)
     formKeeperData.append('city', keeperData.city)
     formKeeperData.append('state', keeperData.state)
@@ -143,42 +169,36 @@ function KeeperForm() {
     formKeeperData.append('zip', keeperData.zip)
 
     for (const inputField of elements) {
+
       if (inputField.type === 'file') {
+
         for (const fileIndex in inputField.files) {
           formKeeperData.append(inputField.name, inputField.files[fileIndex])
+
         }
       }
     }
 
+    setSendingState(true);
     const submitKeeper = await submitKeeperData(token, formKeeperData)
+    setSendingState(false);
+    setKeeperData(initialKeeperData);
+    setPictureNames([]);
+    history.push('/profile');
 
-    // fetch(`${process.env.REACT_APP_BACKEND_URL}/site`, {
-    //   method: 'POST',
-    //   body: formKeeperData,
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //     Autorization: token
-    //   }
-    // })
-    //   .then(res => {
-    //     if (!res.ok) {
-    //       throw new Error('Error uploading file')
-    //     }
+  }
 
-    //     return res.json()
-    //   })
-    //   .then(res => {
-    //     console.log(res)
-    //   })
-    //   .catch(err => {
-    //     console.log(err.message)
-    //   })
+  if(sendingState) {
+    return (
+        <div className="overlay">
+          <FontAwesomeIcon icon={faSpinner} size={"5x"} className="overlay-spinner" spin/>
+        </div>
+    )
   }
 
   return (
     <div className="container-fluid mt-5">
-      <form onSubmit={submitData}>
+      <form onSubmit={submitData} encType="multipart/form-data">
         <div className="form-group row " id="describeSpace">
           <div className="col-6 pl-4 col-sm-4 offset-sm-3">
             <strong>Describe tu Espacio</strong>
@@ -300,6 +320,7 @@ function KeeperForm() {
             <div className="col-4">
               <input
                 type="file"
+                name="files"
                 id="keeperPictures"
                 accept="image/png, image/jpeg, 'image/jpg'"
                 multiple
@@ -335,16 +356,29 @@ function KeeperForm() {
           <hr />
         </div>
 
-        {/**************** TITLE INPUT ******************/}
+        {/**************** NAME INPUT ******************/}
 
         <div className="form-group col-12 offset-sm-3 col-sm-6">
-          <label htmlFor="KeeperTitle">Título</label>
+          <label htmlFor="KeeperName">Nombre de tu espacio:</label>
           <input
             type="text"
             className="form-control bg-white border-right-0 border-left-0 border-top-0"
-            id="kepperTitle"
-            onChange={handleTitle}
+            id="kepperName"
+            onChange={handleName}
             // value={keeperData.name}
+          />
+        </div>
+
+        {/**************** DESCRIPTION INPUT ******************/}
+
+        <div className="form-group col-12 offset-sm-3 col-sm-6">
+          <label htmlFor="KeeperTitle">Breve descripción del sitio:</label>
+          <input
+              type="text"
+              className="form-control bg-white border-right-0 border-left-0 border-top-0"
+              id="kepperTitle"
+              onChange={handleDescription}
+              // value={keeperData.name}
           />
         </div>
 
