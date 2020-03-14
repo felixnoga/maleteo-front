@@ -100,7 +100,7 @@ const ProfileComponent = () => {
               ) : (
                 <div className="col info">
                   <h3>
-                    <Link href="/sitios" className="profileLink">
+                    <Link to="/sitios" className="profileLink">
                       Administra tus sitios
                     </Link>
                   </h3>
