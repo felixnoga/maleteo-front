@@ -61,7 +61,7 @@ const ProfileComponent = () => {
 
   if (isAuthenticated)
     return (
-      <div className="container-fluid profileContainer">
+      <div className="container-fluid profileContainer mb-5 pb-5">
         <div className="row mt-3 text-justify">
           <div className="col-sm-3"></div>
           <div className="col col-sm-3 ml-2 ">
