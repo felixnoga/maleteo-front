@@ -1,25 +1,31 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 import { AuthContext } from '../../context/AuthContext'
+
 import {getUserBookings} from "../../services/apiService";
-import { FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faEuroSign, faCalendar, faQuestion, faCheck, faTimes, faThumbsUp, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faEuroSign, faCalendar, faQuestion, faCheck, faTimes, faThumbsUp, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import moment from "moment";
 
-import './style.scss'
+import './style.scss';
 
 const calculateDays = (start, end) => {
-  const a = moment(start);
-  const b = moment(end);
-  return  b.diff(a, 'days');
+  const a = moment(start)
+  const b = moment(end)
+  return b.diff(a, 'days')
 };
 
-const calculateTotalPrice = (days, numBaggages, firstDayPrice, extraDayPrice)=>{
-  if(days===1) {
-    return firstDayPrice*numBaggages;
+const calculateTotalPrice = (
+  days,
+  numBaggages,
+  firstDayPrice,
+  extraDayPrice
+) => {
+  if (days === 1) {
+    return firstDayPrice * numBaggages
   }
-  return firstDayPrice*numBaggages + extraDayPrice*numBaggages*(days-1)
+  return firstDayPrice * numBaggages + extraDayPrice * numBaggages * (days - 1)
 };
 
 const STATUS_ICONS = {
@@ -27,37 +33,31 @@ const STATUS_ICONS = {
   Aprobada: faThumbsUp,
   Rechazada: faTimes,
   Finalizada: faCheck
-
-};
+}
 
 const ProfileComponent = () => {
-  const [cookies, , removeCookie] = useCookies(['token']);
-  const [bookingsState, setBookingsState] = useState([]);
-  const [isAuthenticated, userdetails] = useContext(AuthContext);
+  const [cookies, , removeCookie] = useCookies(['token'])
+  const [bookingsState, setBookingsState] = useState([])
+  const [isAuthenticated, userdetails] = useContext(AuthContext)
 
-  const {token} = cookies;
+  const { token } = cookies
 
-  useEffect(()=> {
+  useEffect(() => {
     const retrieveBookings = async () => {
-
-      const bookings = await getUserBookings(token);
-      setBookingsState(bookings);
-    };
-    if(userdetails!==undefined && userdetails!==null) {
-      retrieveBookings();
+      const bookings = await getUserBookings(token)
+      setBookingsState(bookings)
     }
-
-
-   }, [userdetails]);
-
-
-    function handleClick(e) {
-      e.preventDefault();
-      console.log('The link to become a keeper was clicked.');
-      //TODO Implemente call to API update Users as a Keeper
+    if (userdetails !== undefined && userdetails !== null) {
+      retrieveBookings()
     }
+  }, [userdetails])
 
 
+  function handleClick(e) {
+    e.preventDefault()
+    console.log('The link to become a keeper was clicked.')
+    //TODO Implemente call to API update Users as a Keeper
+  }
 
   if (isAuthenticated)
     return (
@@ -84,9 +84,16 @@ const ProfileComponent = () => {
               {!userdetails.isKeeper ? (
                 <div className="col info">
                   <h3>
-                    <a href="/toguardian" className="profileLink" onClick={handleClick}>
+                    <Link
+                      to="/toguardian"
+                      className="profileLink"
+                      // onClick={handleClick}
+                    >
                       Convierte en guardian
-                    </a>
+                    </Link>
+                    {/* <a href="/toguardian" className="profileLink" onClick={handleClick}>
+                      Convierte en guardian
+                    </a> */}
                   </h3>
                   <p>Puedes ganar 400€ de media al mes</p>
                 </div>
@@ -105,27 +112,63 @@ const ProfileComponent = () => {
               <div className="col">
                 <h3>Tus reservas</h3>
 
-
-                  {bookingsState!==undefined ?
-                    bookingsState.map((booking) => {
-                    return (
-                    <div className="card" key={booking._id}>
-                      <div className="card-body bg-primary text-white">
-                        <h4 className="card-title">{moment(booking.startDate).format('DD MMMM')} al {moment(booking.endDate).format('DD MMMM')} <span className="d-inline-block float-right small"><FontAwesomeIcon icon={STATUS_ICONS[booking.status]} /> {booking.status}</span></h4>
-                        <h5 className="card-subtitle">En "{booking.site.name}" de {booking.keeper.name} ({booking.site.street}, {booking.site.city})</h5>
-                      </div>
-                        <div className="card-body">
-
-                          <p className="card-text"><FontAwesomeIcon icon={faCalendar} size={"2x"} className="text-primary"/> {calculateDays(booking.startDate, booking.endDate)} días.</p>
-                          <p><FontAwesomeIcon icon={faEuroSign} size={"2x"} className="text-primary"/> Tu precio: {calculateTotalPrice(calculateDays(booking.startDate, booking.endDate), booking.suitcasesPieces, booking.site.firstDayPrice, booking.site.extraDayPrice)} <FontAwesomeIcon icon={faEuroSign} /> por tus {booking.suitcasesPieces} maletas.</p>
-
+                {bookingsState !== undefined
+                  ? bookingsState.map(booking => {
+                      return (
+                        <div className="card" key={booking._id}>
+                          <div className="card-body bg-primary text-white">
+                            <h4 className="card-title">
+                              {moment(booking.startDate).format('DD MMMM')} al{' '}
+                              {moment(booking.endDate).format('DD MMMM')}{' '}
+                              <span className="d-inline-block float-right small">
+                                <FontAwesomeIcon
+                                  icon={STATUS_ICONS[booking.status]}
+                                />{' '}
+                                {booking.status}
+                              </span>
+                            </h4>
+                            <h5 className="card-subtitle">
+                              En "{booking.site.name}" de {booking.keeper.name}{' '}
+                              ({booking.site.street}, {booking.site.city})
+                            </h5>
+                          </div>
+                          <div className="card-body">
+                            <p className="card-text">
+                              <FontAwesomeIcon
+                                icon={faCalendar}
+                                size={'2x'}
+                                className="text-primary"
+                              />{' '}
+                              {calculateDays(
+                                booking.startDate,
+                                booking.endDate
+                              )}{' '}
+                              días.
+                            </p>
+                            <p>
+                              <FontAwesomeIcon
+                                icon={faEuroSign}
+                                size={'2x'}
+                                className="text-primary"
+                              />{' '}
+                              Tu precio:{' '}
+                              {calculateTotalPrice(
+                                calculateDays(
+                                  booking.startDate,
+                                  booking.endDate
+                                ),
+                                booking.suitcasesPieces,
+                                booking.site.firstDayPrice,
+                                booking.site.extraDayPrice
+                              )}{' '}
+                              <FontAwesomeIcon icon={faEuroSign} /> por tus{' '}
+                              {booking.suitcasesPieces} maletas.
+                            </p>
+                          </div>
                         </div>
-                    </div>)
-
-                  }):null
-                  }
-
-
+                      )
+                    })
+                  : null}
               </div>
             </div>
             <div className="row">
@@ -162,9 +205,9 @@ const ProfileComponent = () => {
     return (
       <div>
         <h2>  <FontAwesomeIcon icon={faSpinner} /> Pending Autenticacion ..... </h2>
-       
+
       </div>
     )
 }
 
-export default ProfileComponent
+export default ProfileComponent;
