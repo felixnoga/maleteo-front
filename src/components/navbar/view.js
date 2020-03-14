@@ -69,8 +69,8 @@ const Navbar = (props) => {
                     <ul className="nav navbar-nav">
 
                         <li className="nav-item">
-                            <Link className="nav-link" to="/profile" id="navbarDropdown" role="button"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <Link className="nav-link" to="/profile"
+                                 >
                                 <img src={user.profile_img} alt="user image" className="rounded-circle d-inline-block" style={{width: '30px'}}/> {user.name}
                             </Link>
                         </li>
