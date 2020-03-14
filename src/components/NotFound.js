@@ -17,7 +17,7 @@ function NotFound() {
     </div>*/
 
 <div class="container-fluid">
-  Hello! I am in a full-width container.
+  NOT FOUND
 </div>
 
 
