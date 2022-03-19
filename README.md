@@ -1,9 +1,11 @@
-## Feature/bookings
+## Maleteo APP
 
-Finalizado el proceso de realizar un booking.
-Modificadas navbars para que aparezca el icono de usuario si se está registrado o signin si no.
-El usuario registrado puede hacer logout desde las navbar (móvil y desktop) al pulsar sobre su icono.
+React app to manage luggage leaving while on a city prior to the return trip. It finds people near you (Google Maps API) willing to keep your suitcases for some period of time.
 
+
+## Techs
+
+Front end using React. Backend with Node Js and Express. Authentication and authorization with Passport.js.
 
 
 
